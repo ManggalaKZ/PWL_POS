@@ -9,7 +9,7 @@
     <h1>Form Ubah Data User</h1>
     <a href="/user">kembali</a>
     <br><br>
-    <form method="post" action="/user/tambah/simpan//{{$data->user_id}}">
+    <form method="post" action="/user/ubah/simpan/{{$data->user_id}}">
 
         {{csrf_field()}}
         {{method_field('PUT')}}
