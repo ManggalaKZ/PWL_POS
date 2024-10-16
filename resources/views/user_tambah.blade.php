@@ -1,29 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Data User</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=\, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tambah User</title>
 </head>
 
 <body>
     <h1>Form Tambah Data User</h1>
-    <form method="post" action="/user/tambah/simpan">
-        {{csrf_field()}}
+    <form method="post" action="/user/tambah_simpan">
 
-        <label>Username</label>
-        <input type="text" name="username" placeholder="Masukkan Username">
+        {{ csrf_field() }}
+
+        <label for="">Username</label>
+        <input type="text" name="username" placeholder="Masukan Username">
         <br>
-        <label>Nama</label>
-        <input type="text" name="nama" placeholder="Masukkan Nama">
+        <label for="">Nama</label>
+        <input type="text" name="nama" placeholder="Masukan Nama">
         <br>
-        <label>Password</label>
-        <input type="text" name="password" placeholder="Masukkan Password">
+        <label for="">Password</label>
+        <input type="password" name="password" placeholder="Masukan Password">
         <br>
-        <label>Level ID</label>
-        <input type="text" name="level_id" placeholder="Masukkan Level ID">
+        <label for="">Level ID</label>
+        <input type="number" name="level_id" placeholder="Masukan ID Level">
         <br><br>
-        <input type="submit" class="btn btn-success" value="Simpah">
+        <input type="submit" class="btn btn-success" value="Simpan">
     </form>
+
 </body>
 
 </html>

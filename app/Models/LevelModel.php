@@ -6,18 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-
 class LevelModel extends Model
 {
     use HasFactory;
+    protected $table = 'm_level';        //mendefinisikan nama tabel yang digunakan LevelModel
+    protected $primaryKey = 'level_id';  //mendefinisikan primary key dari tabel yang digunakan
+    protected $fillable = ['level_id', 'level_kode', 'level_nama'];
 
-    protected $table = 'm_level';
-    protected $primaryKey = 'level_id';
-    public $incrementing = true;
-    protected $keyType = 'int';
-    protected $fillable = ['level_nama'];
-    public function level(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(LevelModel::class, 'level_id', 'level_id');
+        return $this->belongsTo(UserModel::class);
     }
 }
