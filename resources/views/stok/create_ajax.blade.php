@@ -3,37 +3,37 @@
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah Data Stok Barang</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Data Stok</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
                     <label>Supplier</label>
-                    <select class="form-control" id="supplier_id" name="supplier_id" required>
-                        <option value="">- Pilih supplier -</option>
-                        @foreach ($supplier as $a)
-                            <option value="{{ $a->supplier_id }}">{{ $a->supplier_nama }}</option>
+                    <select name="supplier_id" id="supplier_id" class="form-control" required>
+                        <option value="">- Pilih Suplier -</option>
+                        @foreach ($supplier as $l)
+                            <option value="{{ $l->supplier_id }}">{{ $l->supplier_nama }}</option>
                         @endforeach
                     </select>
                     <small id="error-supplier_id" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group">
                     <label>Barang</label>
-                    <select class="form-control" id="barang_id" name="barang_id" required>
-                        <option value="">- Pilih barang -</option>
-                        @foreach ($barang as $b)
-                            <option value="{{ $b->barang_id }}">{{ $b->barang_nama }}</option>
+                    <select name="barang_id" id="barang_id" class="form-control" required>
+                        <option value="">- Pilih Barang -</option>
+                        @foreach ($barang as $l)
+                            <option value="{{ $l->barang_id }}">{{ $l->barang_nama }}</option>
                         @endforeach
                     </select>
                     <small id="error-barang_id" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group">
                     <label>User</label>
-                    <select class="form-control" id="user_id" name="user_id" required>
-                        <option value="">- Pilih user -</option>
-                        @foreach ($user as $c)
-                            <option value="{{ $c->user_id }}">{{ $c->username }}</option>
+                    <select name="user_id" id="user_id" class="form-control" required>
+                        <option value="">- Pilih User -</option>
+                        @foreach ($user as $l)
+                            <option value="{{ $l->user_id }}">{{ $l->nama }}</option>
                         @endforeach
                     </select>
                     <small id="error-user_id" class="error-text form-text text-danger"></small>
@@ -46,7 +46,7 @@
                 </div>
                 <div class="form-group">
                     <label>Stok Jumlah</label>
-                    <input value="" type="text" name="stok_jumlah" id="stok_jumlah" class="form-control"
+                    <input value="" type="number" name="stok_jumlah" id="stok_jumlah" class="form-control"
                         required>
                     <small id="error-stok_jumlah" class="error-text form-text text-danger"></small>
                 </div>
@@ -76,11 +76,11 @@
                 },
                 stok_tanggal: {
                     required: true,
-                    minlength: 3
+                    date: true,
                 },
                 stok_jumlah: {
                     required: true,
-                    minlength: 3,
+                    number: true,
                 }
             },
             submitHandler: function(form) {
@@ -96,7 +96,7 @@
                                 title: 'Berhasil',
                                 text: response.message
                             });
-                            datastok.ajax.reload();
+                            tableStok.ajax.reload();
                         } else {
                             $('.error-text').text('');
                             $.each(response.msgField, function(prefix, val) {

@@ -9,37 +9,47 @@
                 </button>
             </div>
             <div class="modal-body">
+                <!-- Level Pengguna -->
                 <div class="form-group">
                     <label>Level Pengguna</label>
                     <select name="level_id" id="level_id" class="form-control" required>
                         <option value="">- Pilih Level -</option>
-                        @foreach ($level as $l)
+                        @foreach($level as $l)
                             <option value="{{ $l->level_id }}">{{ $l->level_nama }}</option>
                         @endforeach
                     </select>
                     <small id="error-level_id" class="error-text form-text text-danger"></small>
                 </div>
+
+                <!-- Username -->
                 <div class="form-group">
                     <label>Username</label>
-                    <input value="" type="text" name="username" id="username" class="form-control" required>
+                    <input type="text" name="username" id="username" class="form-control" required>
                     <small id="error-username" class="error-text form-text text-danger"></small>
                 </div>
+
+                <!-- Nama -->
                 <div class="form-group">
                     <label>Nama</label>
-                    <input value="" type="text" name="nama" id="nama" class="form-control" required>
+                    <input type="text" name="nama" id="nama" class="form-control" required>
                     <small id="error-nama" class="error-text form-text text-danger"></small>
                 </div>
-                <div class="form-group">
-                    <label>Foto Profil</label>
-                    <input type="file" name="file_profil" id="file_profil" class="form-control" required>
-                    <small id="error-file_profil" class="error-text form-text text-danger"></small>
-                </div>
+
+                <!-- Password -->
                 <div class="form-group">
                     <label>Password</label>
-                    <input value="" type="password" name="password" id="password" class="form-control" required>
+                    <input type="password" name="password" id="password" class="form-control" required>
                     <small id="error-password" class="error-text form-text text-danger"></small>
                 </div>
+
+                <!-- Avatar -->
+                <div class="form-group">
+                    <label>Avatar (Foto Profil)</label>
+                    <input type="file" name="avatar" id="avatar" class="form-control" accept="image/*">
+                    <small id="error-avatar" class="error-text form-text text-danger"></small>
+                </div>
             </div>
+
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-warning">Batal</button>
                 <button type="submit" class="btn btn-primary">Simpan</button>
@@ -61,30 +71,29 @@
                     minlength: 3,
                     maxlength: 20
                 },
-                nama: {  // Ganti 'name' menjadi 'nama' agar konsisten dengan controller
+                nama: {
                     required: true,
                     minlength: 3,
                     maxlength: 100
                 },
                 password: {
                     required: true,
-                    minlength: 6,
+                    minlength: 5,
                     maxlength: 20
                 },
-                file_profil: {
-                    required: true,
-                    extension: "jpg|jpeg|png|ico|bmp"
+                avatar: {
+                    extension: "jpeg|png|jpg|gif",
                 }
             },
             submitHandler: function(form) {
-                var formData = new FormData(form); // Jadikan form ke FormData untuk menghandle file 
+                var formData = new FormData(form); // Menggunakan FormData untuk mengirim file
 
                 $.ajax({
                     url: form.action,
                     type: form.method,
                     data: formData,
-                    processData: false, // Menjaga agar file dikirim sebagai multipart/form-data
-                    contentType: false,
+                    contentType: false, // Jaga agar tidak mengatur konten tipe
+                    processData: false, // Jangan proses data
                     success: function(response) {
                         if (response.status) {
                             $('#myModal').modal('hide');
@@ -93,7 +102,7 @@
                                 title: 'Berhasil',
                                 text: response.message
                             });
-                            dataUser.ajax.reload();
+                            tableUser.ajax.reload();
                         } else {
                             $('.error-text').text('');
                             $.each(response.msgField, function(prefix, val) {

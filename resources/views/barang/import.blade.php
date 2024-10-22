@@ -4,14 +4,16 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Import Data Barang</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
                     <label>Download Template</label>
-                    <a href="{{ asset('template_barang.xlsx') }}" class="btn btn-info btn-sm" download><i
-                            class="fa fa-file-excel"></i>Download</a>
+                    <a href="{{ asset('data_import_barang.xlsx') }}" class="btn btn-info btn-sm" download>
+                        <i class="fa fa-file-excel"></i> Download
+                    </a>
                     <small id="error-kategori_id" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group">
@@ -27,60 +29,56 @@
         </div>
     </div>
 </form>
-<script>
-    $(document).ready(function() {
-        $("#form-import").validate({
-            rules: {
-                file_barang: {
-                    required: true,
-                    extension: "xlsx"
-                },
-            },
-            submitHandler: function(form) {
-                var formData = new FormData(
-                form); // Jadikan form ke FormData untuk menghandle file 
 
-                $.ajax({
-                    url: form.action,
-                    type: form.method,
-                    data: formData, // Data yang dikirim berupa FormData 
-                    processData: false, // setting processData dan contentType ke false, untuk menghandle file 
-                    contentType: false,
-                    success: function(response) {
-                        if (response.status) { // jika sukses 
-                            $('#myModal').modal('hide');
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil',
-                                text: response.message
-                            });
-                            tableBarang.ajax.reload(); // reload datatable 
-                        } else { // jika error 
-                            $('.error-text').text('');
-                            $.each(response.msgField, function(prefix, val) {
-                                $('#error-' + prefix).text(val[0]);
-                            });
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Terjadi Kesalahan',
-                                text: response.message
-                            });
-                        }
+<script>
+$(document).ready(function() {
+    $("#form-import").validate({
+        rules: {
+            file_barang: { required: true, extension: "xlsx" } // Aturan validasi file
+        },
+        submitHandler: function(form) {
+            var formData = new FormData(form); // Konversi form ke FormData untuk menghandle file
+            $.ajax({
+                url: form.action,
+                type: form.method,
+                data: formData,
+                processData: false, // Mengatur processData ke false untuk handle file
+                contentType: false, // Mengatur contentType ke false untuk handle file
+                success: function(response) {
+                    if (response.status) { // Jika sukses
+                        $('#myModal').modal('hide');
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: response.message
+                        });
+                        tableBarang.ajax.reload(); // Reload DataTable
+                    } else { // Jika error
+                        $('.error-text').text(''); // Hapus pesan error sebelumnya
+                        $.each(response.msgField, function(prefix, val) {
+                            $('#error-' + prefix).text(val[0]); // Menampilkan pesan error di elemen terkait
+                        });
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Terjadi Kesalahan',
+                            text: response.message
+                        });
                     }
-                });
-                return false;
-            },
-            errorElement: 'span',
-            errorPlacement: function(error, element) {
-                error.addClass('invalid-feedback');
-                element.closest('.form-group').append(error);
-            },
-            highlight: function(element, errorClass, validClass) {
-                $(element).addClass('is-invalid');
-            },
-            unhighlight: function(element, errorClass, validClass) {
-                $(element).removeClass('is-invalid');
-            }
-        });
+                }
+            });
+            return false;
+        },
+        errorElement: 'span',
+        errorPlacement: function(error, element) {
+            error.addClass('invalid-feedback'); // Tambah kelas untuk error
+            element.closest('.form-group').append(error); // Masukkan pesan error ke form group
+        },
+        highlight: function(element, errorClass, validClass) {
+            $(element).addClass('is-invalid'); // Tambah kelas is-invalid pada input
+        },
+        unhighlight: function(element, errorClass, validClass) {
+            $(element).removeClass('is-invalid'); // Hapus kelas is-invalid dari input
+        }
     });
+});
 </script>

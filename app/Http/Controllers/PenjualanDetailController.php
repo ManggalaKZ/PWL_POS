@@ -28,14 +28,14 @@ class PenjualanDetailController extends Controller
 
     public function list(Request $request)
     {
-        $penjualan_details = PenjualanDetailModel::select('detail_id','harga','jumlah','penjualan_id','barang_id')
+        $penjualan_detail = PenjualanDetailModel::select('detail_id','harga','jumlah','penjualan_id','barang_id')
         ->with(['penjualan, barang']);
 
         if ($request->penjualan_id) {
-            $penjualan_details->where('penjualan_id', $request->penjualan_id);
+            $penjualan_detail->where('penjualan_id', $request->penjualan_id);
         }
 
-        return DataTables::of($penjualan_details)
+        return DataTables::of($penjualan_detail)
             ->addIndexColumn()
             ->addColumn('action', function ($penjualan_detail) {
                 $btn  = '<a href="' . url('/penjualan_detail/' . $penjualan_detail->penjualan_detail_id) . '" class="btn btn-info btn-sm">Detail</a> ';

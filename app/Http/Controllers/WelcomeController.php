@@ -1,12 +1,18 @@
 <?php
+
 namespace App\Http\Controllers;
 
-class WelcomeController extends Controller{
-    public function index() {
-        
+use Illuminate\Http\Request;
+
+class WelcomeController extends Controller
+{
+    //JS05
+    //Praktikum 2
+    public function index()
+    {
         $breadcrumb = (object) [
-            'title' => 'Selamat Datang ',
-            'list' => ['Home', 'Welcome']
+            'title' => 'Selamat Datang',
+            'list'  => ['Home', 'Welcome']
         ];
 
         $activeMenu = 'dashboard';

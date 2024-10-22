@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Kesalahan</h5>
-                <button type="button" class="close" data-dismiss="modal" aria label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -17,14 +17,14 @@
         </div>
     </div>
 @else
-    <form action="{{ url('/user/' . $user->user_id . '/update_ajax') }}" method="POST" id="form-edit" enctype="multipart/form-data">
+    <form action="{{ url('/user/' . $user->user_id . '/update_ajax') }}" method="POST" id="formedit" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div id="modal-master" class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Edit Data User</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria label="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -33,9 +33,10 @@
                         <label>Level Pengguna</label>
                         <select name="level_id" id="level_id" class="form-control" required>
                             <option value="">- Pilih Level -</option>
-                            @foreach ($level as $l)
-                                <option {{ $l->level_id == $user->level_id ? 'selected' : '' }} value="{{ $l->level_id }}">
-                                    {{ $l->level_nama }}</option>
+                            @foreach($levels as $level) <!-- Corrected variable name to 'levels' -->
+                                <option {{ ($level->level_id == $user->level_id) ? 'selected' : '' }} value="{{ $level->level_id }}">
+                                    {{ $level->level_nama }}
+                                </option>
                             @endforeach
                         </select>
                         <small id="error-level_id" class="error-text form-text text-danger"></small>
@@ -51,16 +52,18 @@
                         <small id="error-nama" class="error-text form-text text-danger"></small>
                     </div>
                     <div class="form-group">
-                        <label>Foto Profil</label>
-                        <input type="file" name="file_profil" id="file_profil" class="form-control">
-                        <small class="form-text text-muted">Abaikan jika tidak ingin ubah foto profil</small>
-                        <small id="error-file_profil" class="error-text form-text text-danger"></small>
-                    </div>
-                    <div class="form-group">
                         <label>Password</label>
                         <input value="" type="password" name="password" id="password" class="form-control">
                         <small class="form-text text-muted">Abaikan jika tidak ingin ubah password</small>
                         <small id="error-password" class="error-text form-text text-danger"></small>
+                    </div>
+
+                    <!-- Avatar -->
+                    <div class="form-group">
+                        <label>Avatar (Foto Profil)</label>
+                        <input type="file" name="avatar" id="avatar" class="form-control" accept="image/*">
+                        <small id="error-avatar" class="error-text form-text text-danger"></small>
+                        <small class="form-text text-muted">Abaikan jika tidak ingin mengubah foto</small>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -72,39 +75,22 @@
     </form>
     <script>
         $(document).ready(function() {
-            $("#form-edit").validate({
+            $("#formedit").validate({
                 rules: {
-                    level_id: {
-                        required: true,
-                        number: true
-                    },
-                    username: {
-                        required: true,
-                        minlength: 3,
-                        maxlength: 20
-                    },
-                    nama: {  // pastikan sesuai dengan field 'nama' di controller
-                        required: true,
-                        minlength: 3,
-                        maxlength: 100
-                    },
-                    password: {
-                        minlength: 6,
-                        maxlength: 20
-                    },
-                    file_profil: {
-                        extension: "jpg|jpeg|png|ico|bmp"
-                    }
+                    level_id: { required: true, number: true },
+                    username: { required: true, minlength: 3, maxlength: 20 },
+                    nama: { required: true, minlength: 3, maxlength: 100 },
+                    password: { minlength: 5, maxlength: 20 }
                 },
                 submitHandler: function(form) {
-                    var formData = new FormData(form); // Handle file dengan FormData
+                    var formData = new FormData(form); // Menggunakan FormData untuk mengirim file
 
                     $.ajax({
                         url: form.action,
                         type: form.method,
                         data: formData,
-                        processData: false, // Mencegah data diproses sebagai string
-                        contentType: false, // Setting agar data dikirim sebagai multipart/form-data
+                        contentType: false, // Jaga agar tidak mengatur konten tipe
+                        processData: false, // Jangan proses data
                         success: function(response) {
                             if (response.status) {
                                 $('#myModal').modal('hide');
@@ -127,7 +113,7 @@
                             }
                         }
                     });
-                    return false;
+                    return false; // Prevent default form submission
                 },
                 errorElement: 'span',
                 errorPlacement: function(error, element) {
