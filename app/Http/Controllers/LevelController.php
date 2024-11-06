@@ -273,7 +273,7 @@ class LevelController extends Controller
                         $insert[] = [
                             'level_kode' => $value['A'],
                             'level_nama' => $value['B'],
-                            'created_at' => now(),
+                            // 'created_at' => now(),
                         ];
                     }
                 }

@@ -31,20 +31,15 @@ class KategoriController extends Controller
 
     public function list(Request $request)
     {
-        $kategoris = KategoriModel::select('kategori_id', 'kategori_kode', 'kategori_nama');
+        $kategori = KategoriModel::select('kategori_id', 'kategori_kode', 'kategori_nama');
 
         if ($request->kategori_kode) {
-            $kategoris->where('kategori_kode', $request->kategori_kode);
+            $kategori->where('kategori_kode', $request->kategori_kode);
         }
 
-        return DataTables::of($kategoris)
+        return DataTables::of($kategori)
             ->addIndexColumn()
             ->addColumn('action', function ($kategori) {
-                // $btn  = '<a href="' . url('/kategori/' . $kategori->kategori_id) . '" class="btn btn-info btn-sm">Detail</a> ';
-                // $btn .= '<a href="' . url('/kategori/' . $kategori->kategori_id . '/edit') . '" class="btn btn-warning btn-sm">Edit</a> ';
-                // $btn .= '<form class="d-inline-block" method="POST" action="' . url('/kategori/' . $kategori->kategori_id) . '">'
-                //     . csrf_field() . method_field('DELETE') .
-                //     '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\');">Hapus</button></form>';
                 $btn  = '<button onclick="modalAction(\'' . url('/kategori/' . $kategori->kategori_id .
                     '/show_ajax') . '\')" class="btn btn-info btn-sm">Detail</button> ';
                 $btn .= '<button onclick="modalAction(\'' . url('/kategori/' . $kategori->kategori_id .
@@ -77,7 +72,7 @@ class KategoriController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kategori_kode' => 'required|string|min:3|unique:m_kategoris,kategori_kode',
+            'kategori_kode' => 'required|string|min:3|unique:m_kategori,kategori_kode',
             'kategori_nama' => 'required|string|max:100'
         ]);
 
@@ -125,10 +120,10 @@ class KategoriController extends Controller
         return view('kategori.edit', ['breadcrumb' => $breadcrumb, 'page' => $page, 'kategori' => $kategori, 'activeMenu' => $activeMenu]);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, string $id)
     {
         $request->validate([
-            'kategori_kode' => 'required|string|min:3|unique:m_kategoris,kategori_kode,' . $id . ',kategori_id',
+            'kategori_kode' => 'required|string|min:3|unique:m_kategori,kategori_kode,' . $id . ',kategori_id',
             'kategori_nama' => 'required|string|max:100'
         ]);
 
@@ -168,7 +163,7 @@ class KategoriController extends Controller
 
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'kategori_kode' => 'required|string|min:3|max:10|unique:m_kategoris,kategori_kode',
+                'kategori_kode' => 'required|string|min:3|max:10|unique:m_,kategori_kode',
                 'kategori_nama' => 'required|string|max:100',
             ];
 
@@ -203,14 +198,16 @@ class KategoriController extends Controller
     {
         // cek apakah request dari ajax
         if ($request->ajax() || $request->wantsJson()) {
+            // Aturan validasi
             $rules = [
-                'kategori_kode' => 'required|string|min:3|max:10|unique:m_kategoris,kategori_kode,' . $id . ',kategori_id',
+                'kategori_kode' => 'required|string|min:3|max:10|unique:m_kategori,kategori_kode,' . $id . ',kategori_id',
                 'kategori_nama' => 'required|string|max:100',
             ];
 
             // use Illuminate\Support\Facades\Validator;
             $validator = Validator::make($request->all(), $rules);
 
+            // Jika validasi gagal
             if ($validator->fails()) {
                 return response()->json([
                     'status'   => false,    // respon json, true: berhasil, false: gagal
@@ -219,6 +216,7 @@ class KategoriController extends Controller
                 ]);
             }
 
+            // Cari data kategori berdasarkan ID
             $check = KategoriModel::find($id);
             if ($check) {
                 $check->update($request->all());
@@ -233,8 +231,11 @@ class KategoriController extends Controller
                 ]);
             }
         }
+
+        // Jika bukan AJAX, redirect ke halaman utama
         return redirect('/');
     }
+
 
     public function show_ajax($id)
     {
@@ -386,7 +387,7 @@ class KategoriController extends Controller
         // ambil data user yang akan di export
         $kategori = KategoriModel::select('kategori_id', 'kategori_kode', 'kategori_nama',)
             ->orderBy('kategori_id')
-            
+
             ->get();
 
         // load library Dompdf

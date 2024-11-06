@@ -16,20 +16,20 @@
         </div>
     </div>
 @else
-    <form action="{{ url('/kategori/' . $kategori->kategori_id . '/update_ajax') }}" method="POST" id="form-edit">
+    <form action="{{ url('/kategori/' . $kategori->kategori_id . '/update_ajax') }}" method="POST" id="formedit" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div id="modal-master" class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Data User</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Data kategori</h5>
                     <button type="button" class="close" data-dismiss="modal" aria label="Close"><span
                             aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Kategori Kode</label>
-                        <input value="{{ $kategori->kategori_kode }}" type="text" name="kategori_kode" id="name"
+                        <input value="{{ $kategori->kategori_kode }}" type="text" name="kategori_kode" id="kategori_kode"
                             class="form-control" required>
                         <small id="error-kategori_kode" class="error-text form-text text-danger"></small>
                     </div>
@@ -49,7 +49,7 @@
     </form>
     <script>
         $(document).ready(function() {
-            $("#form-edit").validate({
+            $("#formedit").validate({
                 rules: {
                     kategori_kode: {
                         required: true,

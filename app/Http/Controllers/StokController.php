@@ -33,9 +33,9 @@ class StokController extends Controller
 
     public function list(Request $request)
     {
-        $stoks = StokModel::select('stok_id', 'supplier_id', 'barang_id', 'user_id', 'stok_tanggal', 'stok_jumlah')->with('barang')->with('user')->with('supplier')->get();
+        $stok = StokModel::select('stok_id', 'supplier_id', 'barang_id', 'user_id', 'stok_tanggal', 'stok_jumlah')->with('barang')->with('user')->with('supplier')->get();
 
-        return DataTables::of($stoks)
+        return DataTables::of($stok)
             // menambahkan kolom index / no urut (default nama kolom: DT_RowIndex) 
             ->addIndexColumn()
             ->addColumn('aksi', function ($stok) {  // menambahkan kolom aksi 

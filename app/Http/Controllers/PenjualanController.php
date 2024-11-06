@@ -8,6 +8,7 @@ use App\Models\PenjualanModel;
 use App\Models\UserModel;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Yajra\DataTables\Facades\DataTables;
@@ -24,15 +25,26 @@ class PenjualanController extends Controller
         $page = (object) [
             'title' => 'Daftar Penjualan yang terdaftar dalam sistem'
         ];
+
+        // Ambil data
         $penjualan = PenjualanModel::all();
         $barang = BarangModel::all();
-        $user = UserModel::all();
+        $user = UserModel::all(); // Ambil data user
+
+        // Debugging: periksa apakah $user ada
+        if ($user->isEmpty()) {
+            Log::info('No users found in the database.');
+        } else {
+            Log::info('Users found: ', $user->toArray());
+        }
+
+        // Mengembalikan view dengan semua data yang dibutuhkan
         return view('penjualan.index', [
             'activeMenu' => $activeMenu,
             'breadcrumb' => $breadcrumb,
             'penjualan' => $penjualan,
             'barang' => $barang,
-            'user' => $user,
+            'user' => $user, // Pastikan variabel ini dikirim ke view
             'page' => $page
         ]);
     }
@@ -149,7 +161,7 @@ class PenjualanController extends Controller
 
     public function confirm_ajax(string $id)
     {
-        $penjualan = PenjualanModel::find($id);
+        $penjualan = PenjualanModel::with('penjualanDetail.barang');
         return view('penjualan.confirm_ajax', ['penjualan' => $penjualan]);
     }
 
@@ -157,7 +169,7 @@ class PenjualanController extends Controller
     {
         // cek apakah request dari ajax
         if ($request->ajax() || $request->wantsJson()) {
-            $penjualan = PenjualanModel::find($id);
+            $penjualan = PenjualanModel::where('penjualan_id', $id)->first();
             if ($penjualan) {
                 $penjualan->delete();
                 return response()->json([

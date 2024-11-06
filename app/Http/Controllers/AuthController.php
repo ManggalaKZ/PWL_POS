@@ -51,6 +51,7 @@ class AuthController extends Controller
         return view('auth.register')
             ->with('level', $level);
     }
+    
     public function store(Request $request)
     {
         // cek apakah request berupa ajax

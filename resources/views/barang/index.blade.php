@@ -12,6 +12,12 @@
     </div>
     <div class="card-body">
         <!-- untuk Filter data -->
+        @if(session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+        @if(session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
         <div id="filter" class="form-horizontal filter-date p-2 border-bottom mb-2">
             <div class="row">
                 <div class="col-md-12">
@@ -30,12 +36,7 @@
                 </div>
             </div>
         </div>
-        @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-        @if(session('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
-        @endif
+        
         <table class="table table-bordered table-sm table-striped table-hover" id="table-barang">
             <thead>
                 <tr>

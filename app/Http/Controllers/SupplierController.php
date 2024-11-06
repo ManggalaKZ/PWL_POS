@@ -31,13 +31,13 @@ class SupplierController extends Controller
 
     public function list(Request $request)
     {
-        $suppliers = SupplierModel::select('supplier_id', 'supplier_kode', 'supplier_nama', 'supplier_alamat');
+        $supplier = SupplierModel::select('supplier_id', 'supplier_kode', 'supplier_nama', 'supplier_alamat');
 
         if ($request->supplier_kode) {
-            $suppliers->where('supplier_kode', $request->supplier_kode);
+            $supplier->where('supplier_kode', $request->supplier_kode);
         }
 
-        return DataTables::of($suppliers)
+        return DataTables::of($supplier)
             ->addIndexColumn()
             ->addColumn('action', function ($supplier) {
                 // $btn  = '<a href="' . url('/supplier/' . $supplier->supplier_id) . '" class="btn btn-info btn-sm">Detail</a> ';
@@ -77,7 +77,7 @@ class SupplierController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'supplier_kode' => 'required|string|min:3|unique:m_suppliers,supplier_kode',
+            'supplier_kode' => 'required|string|min:3|unique:m_supplier,supplier_kode',
             'supplier_nama' => 'required|string|max:100',
             'supplier_alamat' => 'required|string|max:100',
         ]);
@@ -130,7 +130,7 @@ class SupplierController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'supplier_kode' => 'required|string|min:3|unique:m_suppliers,supplier_kode,' . $id . ',supplier_id',
+            'supplier_kode' => 'required|string|min:3|unique:m_supplier,supplier_kode,' . $id . ',supplier_id',
             'supplier_nama' => 'required|string|max:100',
             'supplier_alamat' => 'required|string|max:100'
         ]);
@@ -172,7 +172,7 @@ class SupplierController extends Controller
 
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'supplier_kode' => 'required|string|min:3|unique:m_suppliers,supplier_kode',
+                'supplier_kode' => 'required|string|min:3|unique:m_supplier,supplier_kode',
                 'supplier_nama' => 'required|string|max:100',
                 'supplier_alamat' => 'required|string|max:100',
             ];
@@ -215,7 +215,7 @@ class SupplierController extends Controller
         // cek apakah request dari ajax
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'supplier_kode' => 'required|string|min:3|unique:m_suppliers,supplier_kode,' . $id . ',supplier_id',
+                'supplier_kode' => 'required|string|min:3|unique:m_supplier,supplier_kode,' . $id . ',supplier_id',
                 'supplier_nama' => 'required|string|max:100',
                 'supplier_alamat' => 'required|string|max:100'
             ];

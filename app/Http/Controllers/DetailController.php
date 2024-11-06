@@ -26,7 +26,7 @@ class DetailController extends Controller
         $penjualan = PenjualanModel::all();
         $detail = DetailModel::all();
         $barang = BarangModel::all();
-        return view('penjualan.detail', [
+        return view('penjualan.index', [
             'activeMenu' => $activeMenu,
             'breadcrumb' => $breadcrumb,
             'penjualan' => $penjualan,

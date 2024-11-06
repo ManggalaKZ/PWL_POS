@@ -11,6 +11,7 @@ use App\Http\Controllers\StokController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
+use App\Models\KategoriModel;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Auth\Events\Logout;
 
@@ -157,7 +158,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/export_pdf', [KategoriController::class, 'export_pdf']); // export pdf
             Route::get('/{id}/show_ajax', [KategoriController::class, 'show_ajax']);
             Route::get('/{id}/edit_ajax', [KategoriController::class, 'edit_ajax']);
-            Route::put('/{id}/update_ajax', [KategoriController::class, 'update_ajax']);
+            Route::put('/{id}/update_ajax', [KategoriModel::class, 'update_ajax']);
             Route::get('/{id}/delete_ajax', [KategoriController::class, 'confirm_ajax']);
             Route::delete('/{id}/delete_ajax', [KategoriController::class, 'delete_ajax']);
             Route::delete('/{id}', [KategoriController::class, 'destroy']);

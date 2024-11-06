@@ -1,4 +1,4 @@
-@empty($penjualan_detail)
+@empty($penjualan)
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -11,12 +11,12 @@
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
                     Data yang anda cari tidak ditemukan
                 </div>
-                <a href="{{ url('/detail') }}" class="btn btn-warning">Kembali</a>
+                <a href="{{ url('/penjualan') }}" class="btn btn-warning">Kembali</a>
             </div>
         </div>
     </div>
 @else
-    <form action="{{ url('/detail/' . $penjualan_detail->detail_id . '/delete_ajax') }}" method="POST" id="form-delete">
+    <form action="{{ url('/penjualan/' . $penjualan->penjualan . '/delete_ajax') }}" method="POST" id="form-delete">
         @csrf
         @method('DELETE')
         <div id="modal-master" class="modal-dialog modal-lg" role="document">
@@ -34,15 +34,15 @@
                     <table class="table table-sm table-bordered table-striped">
                         <tr>
                             <th class="text-right col-3">Penjualan ID :</th>
-                            <td class="col-9">{{ $penjualan_detail->penjualan->penjualan_id }}</td>
+                            <td class="col-9">{{ $penjualan->penjualan->penjualan_id }}</td>
                         </tr>
                         <tr>
                             <th class="text-right col-3">Nama Barang :</th>
-                            <td class="col-9">{{ $penjualan_detail->barang->barang_nama }}</td>
+                            <td class="col-9">{{ $penjualan->barang->barang_nama }}</td>
                         </tr>
                         <tr>
                             <th class="text-right col-3">Harga :</th>
-                            <td class="col-9">{{ $penjualan_detail->harga }}</td>
+                            <td class="col-9">{{ $penjualan->harga }}</td>
                         </tr>
                         <tr>
                             <th class="text-right col-3">Jumlah :</th>
